@@ -14,21 +14,6 @@
 // governing permissions and limitations under the License.
 
 
-// Simple demo to toggle EPD between two images.
-
-// Operation from reset:
-// * display version
-// * display compiled-in display setting
-// * display FLASH detected or not
-// * display temperature (displayed before every image is changed)
-// * clear screen
-// * delay 5 seconds (flash LED)
-// * display text image
-// * delay 5 seconds (flash LED)
-// * display picture
-// * delay 5 seconds (flash LED)
-// * back to text display
-
 
 #include <inttypes.h>
 #include <ctype.h>
@@ -160,12 +145,13 @@ const int Pin_RED_LED = 13;
 #define LED_OFF LOW
 
 
-
-
 // define the E-Ink display
 EPD_Class EPD(EPD_SIZE, Pin_PANEL_ON, Pin_BORDER, Pin_DISCHARGE, Pin_RESET, Pin_BUSY, Pin_EPD_CS);
 
+// 
+display ea27;
 
+// 264 * 176 / 8
 char frame_buffer[ 5808 ] = { 0 };
 
 // I/O setup
@@ -224,6 +210,10 @@ void setup() {
 
   // empty framebuffer
   memset(frame_buffer,0,sizeof(frame_buffer));
+
+  ea27.frame_buffer = frame_buffer;
+  ea27.w = 264; 
+  ea27.h = 176;
 }
 
 
@@ -245,11 +235,20 @@ void loop() {
     EPD.begin(); // power up the EPD panel
     EPD.clear();
     EPD.setFactor(temperature); // adjust for current temperature
-    
+   
+    pixelbit_point(&ea27, 0, 0);
+    pixelbit_point(&ea27, 0, 50);
+    pixelbit_point(&ea27, 50, 50);
+    pixelbit_point(&ea27, 50, 51);
+    pixelbit_point(&ea27, 50, 52);
+    pixelbit_point(&ea27, 51, 50);
+    pixelbit_point(&ea27, 51, 51);
+    pixelbit_point(&ea27, 51, 52);
+    pixelbit_point(&ea27, 52, 50);
+    pixelbit_point(&ea27, 52, 51);
+    pixelbit_point(&ea27, 52, 52);
+
     /*EPD.image(IMAGE_1_BITS);*/
-
-
-    frame_buffer[5+100] = 1;
 
     EPD.image_sram(frame_buffer);
     
