@@ -220,7 +220,6 @@ void setup() {
 static int state = 0;
 int latch = 1;
 
-
 // main loop
 void loop() {
   int temperature = LM75.read();
@@ -236,19 +235,42 @@ void loop() {
     EPD.clear();
     EPD.setFactor(temperature); // adjust for current temperature
    
-    pixelbit_point(&ea27, 0, 0);
-    pixelbit_point(&ea27, 0, 50);
-    pixelbit_point(&ea27, 50, 50);
-    pixelbit_point(&ea27, 50, 51);
-    pixelbit_point(&ea27, 50, 52);
-    pixelbit_point(&ea27, 51, 50);
-    pixelbit_point(&ea27, 51, 51);
-    pixelbit_point(&ea27, 51, 52);
-    pixelbit_point(&ea27, 52, 50);
-    pixelbit_point(&ea27, 52, 51);
-    pixelbit_point(&ea27, 52, 52);
-
     /*EPD.image(IMAGE_1_BITS);*/
+
+    pixelbit_vline(&ea27, 0, 175, 20);
+    pixelbit_vline(&ea27, 0, 175, 243);
+
+    pixelbit_hline(&ea27, 0, 263, 20);
+    pixelbit_hline(&ea27, 0, 263, 155);
+    
+    
+    pixelbit_hline(&ea27, 20, 130, 40);
+
+    pixelbit_rectangle(&ea27, 60, 60, 
+                              100, 100, 0);
+    
+    pixelbit_rectangle(&ea27, 80, 80, 
+                              120, 120, 1);
+
+    // top left corner
+    pixelbit_line(&ea27, 0, 0, 20, 20);
+    pixelbit_line(&ea27, 20, 0, 0, 20);
+   
+    // bottom left corner
+    pixelbit_line(&ea27, 0, 155, 20, 175);
+    pixelbit_line(&ea27, 20, 155, 0, 175);
+
+    // top right corner
+    pixelbit_line(&ea27, 243, 0, 263, 20);
+    pixelbit_line(&ea27, 263, 0, 243, 20);
+    
+    // bottom right corner
+    pixelbit_line(&ea27, 243, 155, 263, 175);
+    pixelbit_line(&ea27, 263, 155, 243, 175);
+
+    // top pane
+    pixelbit_line(&ea27, 20, 0, 243, 20);
+    pixelbit_line(&ea27, 20, 20, 243, 0);
 
     EPD.image_sram(frame_buffer);
     
